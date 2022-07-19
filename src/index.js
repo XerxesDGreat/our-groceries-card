@@ -29,6 +29,7 @@ class OurGroceriesCard extends LitElement {
     this.openedLists = {};
     this.listItems = {};
     this.showAddItems = {};
+    this.initialRenderDone = false;
   }
 
   // static async getConfigElement() {
@@ -66,7 +67,7 @@ class OurGroceriesCard extends LitElement {
       throw new Error(`Our Groceries sensor not found.`);
     }
 
-    return html`
+    let a = html`
       <ha-card class="our-groceries-card">
         <style>
           ${OurGroceriesCard.styles}
@@ -77,6 +78,8 @@ class OurGroceriesCard extends LitElement {
         <div class="body">${this.renderBody()}</div>
       </ha-card>
     `;
+    this.initialRenderDone = true;
+    return a;
   }
 
   /**
@@ -185,7 +188,8 @@ class OurGroceriesCard extends LitElement {
 
       let isOpen = this.openedLists[list.id];
       let listDetails = isOpen && this.listItems[list.id];
-      if (this.config.expanded) this.openList(list);
+      if (!this.initialRenderDone && this.config.expanded) this.openList(list);
+      //if (this.config.expanded) this.openList(list);
 
       let hideList = false;
 
